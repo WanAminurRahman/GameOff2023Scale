@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://bfk7fw8ow4exq"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_8e8go"]
+[ext_resource type="Texture2D" uid="uid://b6des552uwky4" path="res://assets/1bit-mini-gobot.png" id="2_jpkr1"]
+[ext_resource type="PackedScene" uid="uid://buv8tk24yf3ki" path="res://hurtbox.tscn" id="3_4ijb1"]
+[ext_resource type="PackedScene" uid="uid://ratwpjbfxid6" path="res://hitbox.tscn" id="4_85gdy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mvpxu"]
+radius = 5.0
+height = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nq6l2"]
+size = Vector2(6, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7ebx7"]
+size = Vector2(8, 12)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_8e8go")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_jpkr1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_mvpxu")
+
+[node name="Hurtbox" parent="." instance=ExtResource("3_4ijb1")]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_nq6l2")
+
+[node name="Hitbox" parent="." instance=ExtResource("4_85gdy")]
+collision_layer = 0
+collision_mask = 64
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2(7, 0)
+shape = SubResource("RectangleShape2D_7ebx7")
+
+[connection signal="take_damage" from="Hurtbox" to="." method="_on_hurtbox_take_damage"]
+
+[editable path="Hurtbox"]
+[editable path="Hitbox"]
